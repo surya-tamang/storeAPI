@@ -21,7 +21,12 @@ const loginUser = async (req, res) => {
       process.env.JWT_SECRET || "SerCR3tK3Y",
       { expiresIn: "15m" }
     );
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 15 * 60 * 1000,
+    });
     return res.status(200).json({ msg: "login successful" });
   } catch (error) {
     console.log(error);
@@ -53,7 +58,7 @@ const signupUser = async (req, res) => {
     const newUser = new User({
       first_name,
       last_name,
-      phone,
+      phone: Number(phone),
       email,
       password: hashedPwd,
     });

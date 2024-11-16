@@ -3,6 +3,7 @@ const cors = require("cors");
 const connectDb = require("./connection");
 const userRouter = require("./routes/userRoutes");
 const productRouter = require("./routes/productRoutes");
+const cookieParser = require("cookie-parser");
 const app = express();
 
 (async () => {
@@ -15,11 +16,17 @@ const app = express();
 })();
 
 //to enable cors
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:4000", // Frontend URL
+    credentials: true, // Allow cookies to be sent
+  })
+);
 
 //to parse json bodies and set limits
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(express.json({ limit: "10mb" }));
+app.use(cookieParser());
 
 //routes
 app.get("/", (req, res) => {
