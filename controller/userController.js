@@ -1,5 +1,6 @@
 const User = require("../model/userModel");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -12,6 +13,15 @@ const loginUser = async (req, res) => {
     if (!isMatch) {
       return re.status(400).json({ msg: "password doesn't match" });
     }
+    const token = jwt.sign(
+      {
+        userId: existingUser._id,
+        email: existingUser.email,
+      },
+      process.env.JWT_SECRET || "SerCR3tK3Y",
+      { expiresIn: "15m" }
+    );
+    res.cookie("token", token);
     return res.status(200).json({ msg: "login successful" });
   } catch (error) {
     console.log(error);
