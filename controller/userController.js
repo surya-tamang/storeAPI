@@ -1,8 +1,8 @@
-const User = require("../model/userModel");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import User from "../model/userModel.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-const loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
     const existingUser = await User.findOne({ email });
@@ -33,7 +33,7 @@ const loginUser = async (req, res) => {
     return res.status(500).json({ msg: "server error" });
   }
 };
-const signupUser = async (req, res) => {
+export const signupUser = async (req, res) => {
   const { first_name, last_name, phone, address, email, password } = req.body;
   try {
     if (
@@ -69,7 +69,7 @@ const signupUser = async (req, res) => {
     return res.status(500).json({ msg: "server error" });
   }
 };
-const updateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
   const { id } = req.params;
   const {
     first_name,
@@ -107,7 +107,7 @@ const updateUser = async (req, res) => {
     return res.status(500).json({ msg: "server error" });
   }
 };
-const getUser = async (req, res) => {
+export const getUser = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await User.findById(id);
@@ -117,7 +117,7 @@ const getUser = async (req, res) => {
     return res.status(500).json({ msg: "server error" });
   }
 };
-const getUsers = async (req, res) => {
+export const getUsers = async (req, res) => {
   try {
     const users = await User.find({});
     return res.status(201).json(users);
@@ -126,7 +126,7 @@ const getUsers = async (req, res) => {
     return res.status(500).json({ msg: "server error" });
   }
 };
-const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res) => {
   const { id } = req.params;
   try {
     const deletedUser = await User.findByIdAndDelete(id);
@@ -140,13 +140,4 @@ const deleteUser = async (req, res) => {
     console.log(error);
     return res.status(500).json({ msg: "server error" });
   }
-};
-
-module.exports = {
-  loginUser,
-  signupUser,
-  updateUser,
-  getUser,
-  getUsers,
-  deleteUser,
 };

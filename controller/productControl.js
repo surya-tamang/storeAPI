@@ -1,6 +1,5 @@
-const Products = require("../model/productModel");
-
-const getProducts = async (req, res) => {
+import Products from "../model/productModel.js";
+export const getProducts = async (req, res) => {
   try {
     const products = await Products.find({});
     return res.status(200).json(products);
@@ -9,7 +8,7 @@ const getProducts = async (req, res) => {
     return res.status(500).json({ msg: "server error" });
   }
 };
-const getProduct = async (req, res) => {
+export const getProduct = async (req, res) => {
   const { id } = req.params;
   try {
     const product = await Products.findById(id);
@@ -19,7 +18,7 @@ const getProduct = async (req, res) => {
     return res.status(500).json({ msg: "server error" });
   }
 };
-const addProduct = async (req, res) => {
+export const addProduct = async (req, res) => {
   const { name, price, description, category, images } = req.body;
   try {
     // Validate that all required fields are present
@@ -45,7 +44,7 @@ const addProduct = async (req, res) => {
     return res.status(500).json({ msg: "Internal server error" });
   }
 };
-const updateProduct = async (req, res) => {
+export const updateProduct = async (req, res) => {
   const { id } = req.params;
   const { name, price, description, category, images, rating } = req.body;
   try {
@@ -97,7 +96,7 @@ const updateProduct = async (req, res) => {
     return res.status(500).json({ msg: "Server error" });
   }
 };
-const deleteProduct = async (req, res) => {
+export const deleteProduct = async (req, res) => {
   const { id } = req.params;
   try {
     const deletedProd = await Products.findByIdAndDelete(id);
@@ -111,12 +110,4 @@ const deleteProduct = async (req, res) => {
     console.log(error);
     return res.status(500).json({ msg: "server error" });
   }
-};
-
-module.exports = {
-  getProduct,
-  getProducts,
-  addProduct,
-  updateProduct,
-  deleteProduct,
 };
