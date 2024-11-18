@@ -1,20 +1,15 @@
 import express from "express";
 import cors from "cors";
-import multer from "multer";
 import cookieParser from "cookie-parser";
-import { connectDb } from "./connection/index.js";
+import { connectDb } from "./db/connectDb.js";
 import userRouter from "./routes/userRoutes.js";
 import productRouter from "./routes/productRoutes.js";
 const app = express();
-const url = "mongodb://localhost:27017/store";
-const storage = multer.diskStorage({
-  destination: "./uploads",
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "_" + Math.round(Math.random() * 100);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  },
-});
-const upload = multer({ storage: storage });
+import dotenv from "dotenv";
+dotenv.config();
+const url =
+  "mongodb+srv://tmgsurya055:root@store.g6oyf.mongodb.net/?retryWrites=true&w=majority&appName=store";
+
 // connnet to the database
 connectDb(url);
 
@@ -38,17 +33,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
-app.post("/profile", upload.single("image"), function (req, res, next) {
-  try {
-    return res
-      .status(200)
-      .json({ msg: "File uploaded success", file: req.file });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ msg: "Internal server error" });
-  }
-});
 
 // server listening
-const port = 8848;
+const port = process.env.PORT || 8848;
 app.listen(port, () => console.log(`Server started on port ${port}`));

@@ -19,19 +19,20 @@ export const getProduct = async (req, res) => {
   }
 };
 export const addProduct = async (req, res) => {
-  const { name, price, description, category, images } = req.body;
+  const { title, price, description, category } = req.body;
+  const imgPath = req.files.map((file) => file.path);
   try {
     // Validate that all required fields are present
-    if (!name || !price || !description || !category || !images) {
+    if (!title || !price || !description || !category) {
       return res.status(400).json({ msg: "All fields are required" });
     }
 
     const newProduct = new Products({
-      name,
+      title,
       price,
       description,
       category,
-      images,
+      images: imgPath,
     });
 
     await newProduct.save();
