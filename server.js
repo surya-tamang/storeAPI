@@ -8,7 +8,7 @@ const app = express();
 import dotenv from "dotenv";
 dotenv.config();
 const url =
-  "mongodb+srv://tmgsurya055:root@store.g6oyf.mongodb.net/?retryWrites=true&w=majority&appName=store";
+  "mongodb+srv://tmgsurya055:Dx0fpw6YDG8CSiAR@store.g6oyf.mongodb.net/store?retryWrites=true&w=majority&appName=store";
 
 // connnet to the database
 connectDb(url);
@@ -16,6 +16,7 @@ connectDb(url);
 //to enable cors
 app.use(
   cors({
+    // origin: "*",
     origin: "http://localhost:4000",
     credentials: true,
   })

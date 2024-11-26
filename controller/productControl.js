@@ -20,6 +20,8 @@ export const getProduct = async (req, res) => {
 };
 export const addProduct = async (req, res) => {
   const { title, price, description, category } = req.body;
+  if (!req.files || req.files.length === 0)
+    return res.status(400).json({ msg: "No files were uploaded" });
   const imgPath = req.files.map((file) => file.path);
   try {
     // Validate that all required fields are present

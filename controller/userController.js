@@ -11,7 +11,7 @@ export const loginUser = async (req, res) => {
     }
     const isMatch = await bcrypt.compare(password, existingUser.password);
     if (!isMatch) {
-      return re.status(400).json({ msg: "password doesn't match" });
+      return res.status(400).json({ msg: "Incorrect email or password" });
     }
     const token = jwt.sign(
       {
