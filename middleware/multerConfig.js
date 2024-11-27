@@ -1,10 +1,12 @@
 import multer from "multer";
+
 const storage = multer.diskStorage({
-  destination: "./uploads",
+  destination: "../uploads",
   filename: (req, file, cb) => {
-    return cb(null, `${Date.now()}_${file.originalname}`);
+    const sanitizedFilename = file.originalname.replace(/\s+/g, "_"); // Replace spaces with underscores
+    cb(null, `${Date.now()}_${sanitizedFilename}`);
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 export default upload;

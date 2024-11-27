@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import path from "path";
 import cookieParser from "cookie-parser";
 import { connectDb } from "./db/connectDb.js";
 import userRouter from "./routes/userRoutes.js";
@@ -21,7 +22,8 @@ app.use(
     credentials: true,
   })
 );
-app.use("/uploads", express.static("public/data/uploads"));
+
+app.use(express.static("uploads"));
 
 //to parse json bodies and set limits
 app.use(express.urlencoded({ limit: "10mb", extended: true }));

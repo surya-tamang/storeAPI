@@ -19,9 +19,20 @@ const userSchema = new mongoose.Schema(
     },
     phone: {
       type: Number,
+      required: true,
     },
     address: {
-      type: String,
+      city: {
+        type: String,
+        required: true,
+      },
+      tole: {
+        type: String,
+        required: true,
+      },
+      near: {
+        type: String,
+      },
     },
     profile_pic: {
       type: String,
