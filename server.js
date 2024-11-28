@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-import path from "path";
+import helmet from "helmet";
+import limiter from "./config/rateLimiter.js";
 import cookieParser from "cookie-parser";
 import { connectDb } from "./db/connectDb.js";
 import userRouter from "./routes/userRoutes.js";
@@ -8,8 +9,9 @@ import productRouter from "./routes/productRoutes.js";
 const app = express();
 import dotenv from "dotenv";
 dotenv.config();
-const url =
-  "mongodb+srv://tmgsurya055:Dx0fpw6YDG8CSiAR@store.g6oyf.mongodb.net/store?retryWrites=true&w=majority&appName=store";
+const url = process.env.MONGO_URL;
+//limiting the number of requests
+app.use(limiter);
 
 // connnet to the database
 connectDb(url);
@@ -22,12 +24,14 @@ app.use(
     credentials: true,
   })
 );
+//secure apps by setting HTTP response header
+app.use(helmet());
 
 app.use(express.static("uploads"));
 
 //to parse json bodies and set limits
-app.use(express.urlencoded({ limit: "10mb", extended: true }));
-app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(cookieParser());
 
 //routes
@@ -38,5 +42,5 @@ app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
 
 // server listening
-const port = process.env.PORT || 8848;
+const port = process.env.PORT;
 app.listen(port, () => console.log(`Server started on port ${port}`));

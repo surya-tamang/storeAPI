@@ -1,7 +1,7 @@
 import multer from "multer";
 
 const storage = multer.diskStorage({
-  destination: "../uploads",
+  destination: "./uploads",
   filename: (req, file, cb) => {
     const sanitizedFilename = file.originalname.replace(/\s+/g, "_"); // Replace spaces with underscores
     cb(null, `${Date.now()}_${sanitizedFilename}`);
