@@ -19,21 +19,42 @@ export const getProduct = async (req, res) => {
   }
 };
 export const addProduct = async (req, res) => {
-  const { title, price, description, category } = req.body;
+  const {
+    title,
+    price,
+    discountRate,
+    description,
+    category,
+    sub_category,
+    colors,
+    sizes,
+  } = req.body;
   if (!req.files || req.files.length === 0)
     return res.status(400).json({ msg: "No files were uploaded" });
   const imgPath = req.files.map((file) => file.path);
   try {
     // Validate that all required fields are present
-    if (!title || !price || !description || !category) {
+    if (
+      !title ||
+      !price ||
+      !description ||
+      !category ||
+      !sub_category ||
+      !colors ||
+      !sizes
+    ) {
       return res.status(400).json({ msg: "All fields are required" });
     }
 
     const newProduct = new Products({
       title,
       price,
+      discountRate,
       description,
       category,
+      sub_category,
+      colors,
+      sizes,
       images: imgPath,
     });
 
@@ -49,13 +70,27 @@ export const addProduct = async (req, res) => {
 };
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
-  const { name, price, description, category, images, rating } = req.body;
+  const {
+    name,
+    price,
+    discountRate,
+    description,
+    category,
+    sub_category,
+    colors,
+    sizes,
+    images,
+    rating,
+  } = req.body;
   try {
     const data = {};
     if (name) data.name = name;
     if (price) data.price = price;
+    if (discountRate) data.discountRate = discountRate;
     if (description) data.description = description;
     if (category) data.category = category;
+    if (colors) data.category = colors;
+    if (sizes) data.sizes = sizes;
     if (images) data.images = images;
 
     // Find the product to update

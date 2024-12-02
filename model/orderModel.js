@@ -6,6 +6,15 @@ const orderSchema = new mongoose.Schema({
     ref: "user",
   },
   productId: { type: mongoose.Schema.Types.ObjectId, ref: "product" },
+  quantity: {
+    type: Number,
+  },
+  color: {
+    type: String,
+  },
+  size: {
+    type: String,
+  },
 });
 
 const order = mongoose.model("order", orderSchema);

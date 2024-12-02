@@ -11,7 +11,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const url = process.env.MONGO_URL;
 //limiting the number of requests
-app.use(limiter);
+// app.use(limiter);
 
 // connnet to the database
 connectDb(url);
@@ -19,7 +19,7 @@ connectDb(url);
 //to enable cors
 app.use(
   cors({
-    // origin: "*",
+    // origin: "*"
     origin: "http://localhost:4000",
     credentials: true,
   })

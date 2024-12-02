@@ -9,6 +9,9 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    discountRate: {
+      type: Number,
+    },
     description: {
       type: String,
       required: true,
@@ -17,6 +20,12 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    sub_category: {
+      type: String,
+      required: true,
+    },
+    colors: [{ type: String }],
+    sizes: [{ type: String }],
     images: [{ type: String, required: true }],
     ratings: [
       {
