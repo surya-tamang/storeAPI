@@ -53,8 +53,8 @@ export const addProduct = async (req, res) => {
       description,
       category,
       sub_category,
-      colors,
-      sizes,
+      colors: colors.split(","),
+      sizes: sizes.split(","),
       images: imgPath,
     });
 
@@ -147,5 +147,22 @@ export const deleteProduct = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: "server error" });
+  }
+};
+export const filterProduct = async (req, res) => {
+  const { category, sub_category, search } = req.query;
+  const query = {};
+  try {
+    if (category) query.category = category;
+    if (sub_category) query.sub_category = sub_category;
+    if (search) query.title = { $regex: search, $options: "i" };
+    const product = await Products.find(query);
+    if (!product) {
+      return res.status(400).json({ msg: "No products found" });
+    }
+    // console.log(query);
+    return res.status(200).json({ products: product });
+  } catch (error) {
+    res.status(500).json("Server error");
   }
 };
