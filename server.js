@@ -9,7 +9,7 @@ import productRouter from "./routes/productRoutes.js";
 const app = express();
 import dotenv from "dotenv";
 dotenv.config();
-const url = process.env.MONGO_URL;
+const url = process.env.MONGODB_URI;
 //limiting the number of requests
 // app.use(limiter);
 

@@ -15,6 +15,7 @@ productRouter
   .route("/")
   .get(getProducts)
   .post(upload.array("images", 5), addProduct);
+
 productRouter.route("/filter/").get(filterProduct);
 
 productRouter
