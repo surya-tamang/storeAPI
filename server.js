@@ -22,8 +22,8 @@ connectDb(url);
 //to enable cors
 app.use(
   cors({
-    // origin: "*"
-    origin: "http://localhost:40  00",
+    origin: "*",
+    // origin: "http://localhost:4000",
     credentials: true,
   })
 );

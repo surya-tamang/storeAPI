@@ -4,4 +4,3 @@ dist/
 build/
 lib/
 .env
-uploads/
