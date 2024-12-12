@@ -10,7 +10,9 @@ import orderRouter from "./routes/orderRoutes.js";
 const app = express();
 import dotenv from "dotenv";
 dotenv.config();
-const url = process.env.MONGODB_URI;
+const url =
+  process.env.MONGODB_URI ||
+  "mongodb+srv://tmgsurya055:Dx0fpw6YDG8CSiAR@store.g6oyf.mongodb.net/store?retryWrites=true&w=majority&appName=store";
 //limiting the number of requests
 // app.use(limiter);
 
@@ -44,5 +46,5 @@ app.use("/api/product", productRouter);
 app.use("/api/order", orderRouter);
 
 // server listening
-const port = process.env.PORT;
+const port = process.env.PORT || 8848;
 app.listen(port, () => console.log(`Server started on port ${port}`));

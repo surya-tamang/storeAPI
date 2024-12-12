@@ -4,9 +4,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
-    "run": "node server.js"
+    "start": "nodemon server.js",
+    "dev": "nodemon server.js",
+    "run": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
