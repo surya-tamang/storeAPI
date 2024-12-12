@@ -1,4 +1,20 @@
 import mongoose from "mongoose";
+const addressSchema = new mongoose.Schema(
+  {
+    city: {
+      type: String,
+      required: true,
+    },
+    tole: {
+      type: String,
+      required: true,
+    },
+    near: {
+      type: String,
+    },
+  },
+  { _id: false }
+);
 const userSchema = new mongoose.Schema(
   {
     first_name: {
@@ -22,17 +38,8 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     address: {
-      city: {
-        type: String,
-        required: true,
-      },
-      tole: {
-        type: String,
-        required: true,
-      },
-      near: {
-        type: String,
-      },
+      type: addressSchema,
+      required: true,
     },
     profile_pic: {
       type: String,

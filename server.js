@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import { connectDb } from "./db/connectDb.js";
 import userRouter from "./routes/userRoutes.js";
 import productRouter from "./routes/productRoutes.js";
+import orderRouter from "./routes/orderRoutes.js";
 const app = express();
 import dotenv from "dotenv";
 dotenv.config();
@@ -20,7 +21,7 @@ connectDb(url);
 app.use(
   cors({
     // origin: "*"
-    origin: "http://localhost:4000",
+    origin: "http://localhost:40  00",
     credentials: true,
   })
 );
@@ -40,6 +41,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
+app.use("/api/order", orderRouter);
 
 // server listening
 const port = process.env.PORT;

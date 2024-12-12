@@ -59,6 +59,7 @@ export const signupUser = async (req, res) => {
       first_name,
       last_name,
       phone: Number(phone),
+      address,
       email,
       password: hashedPwd,
     });

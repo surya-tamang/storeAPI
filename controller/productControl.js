@@ -89,7 +89,8 @@ export const updateProduct = async (req, res) => {
     if (discountRate) data.discountRate = discountRate;
     if (description) data.description = description;
     if (category) data.category = category;
-    if (colors) data.category = colors;
+    if (sub_category) data.sub_category = sub_category;
+    if (colors) data.colors = colors;
     if (sizes) data.sizes = sizes;
     if (images) data.images = images;
 
@@ -161,7 +162,7 @@ export const filterProduct = async (req, res) => {
       return res.status(400).json({ msg: "No products found" });
     }
     // console.log(query);
-    return res.status(200).json({ products: product });
+    return res.status(200).json({ product });
   } catch (error) {
     res.status(500).json("Server error");
   }
