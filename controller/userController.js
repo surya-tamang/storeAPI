@@ -18,7 +18,7 @@ export const loginUser = async (req, res) => {
         userId: existingUser._id,
         email: existingUser.email,
       },
-      process.env.JWT_SECRET || "SerCR3tK3Y",
+      process.env.JWT_SECRET,
       { expiresIn: "15m" }
     );
     res.cookie("token", token, {

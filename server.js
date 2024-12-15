@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import limiter from "./config/rateLimiter.js";
 import cookieParser from "cookie-parser";
 import { connectDb } from "./db/connectDb.js";
 import userRouter from "./routes/userRoutes.js";
@@ -11,9 +10,6 @@ const app = express();
 import dotenv from "dotenv";
 dotenv.config();
 const url = process.env.MONGODB_URI;
-// limiting the number of requests
-app.use(limiter);
-
 // connnet to the database
 connectDb(url);
 

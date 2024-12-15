@@ -4,9 +4,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
-    "run": "node server.js"
+    "start": "nodemon server.js",
+    "dev": "nodemon server.js",
+    "run": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +19,6 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
-    "express-rate-limit": "^7.4.1",
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.10.0",
