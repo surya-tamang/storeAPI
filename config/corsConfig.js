@@ -1,7 +1,7 @@
 // config/corsConfig.js
 const allowedOrigins = [
   "http://localhost:4000", // Frontend local development URL
-  "https://surya-tamang.github.io/trendhop/", // GitHub Pages URL
+  "https://surya-tamang.github.io", // GitHub Pages URL
 ];
 
 export const corsOptions = {
