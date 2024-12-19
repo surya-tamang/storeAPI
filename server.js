@@ -6,6 +6,7 @@ import { connectDb } from "./db/connectDb.js";
 import userRouter from "./routes/userRoutes.js";
 import productRouter from "./routes/productRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
+import { corsOptions } from "./config/corsConfig.js";
 const app = express();
 import dotenv from "dotenv";
 dotenv.config();
@@ -14,13 +15,8 @@ const url = process.env.MONGODB_URI;
 connectDb(url);
 
 //to enable cors
-app.use(
-  cors({
-    // origin: "*",
-    origin: "http://localhost:4000",
-    credentials: true,
-  })
-);
+app.use(cors(corsOptions));
+
 //secure apps by setting HTTP response header
 app.use(helmet());
 
