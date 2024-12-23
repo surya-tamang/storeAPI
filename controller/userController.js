@@ -2,6 +2,26 @@ import User from "../model/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+const generateTokens = (user) => {
+  const accessToken = jwt.sign(
+    {
+      userId: user._id,
+      email: user.email,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "15m" } // Short-lived access token
+  );
+  const refreshToken = jwt.sign(
+    {
+      userId: user._id,
+      email: user.email,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" } // Long-lived refresh token
+  );
+  return { accessToken, refreshToken };
+};
+
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -13,18 +33,16 @@ export const loginUser = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ msg: "Incorrect email or password" });
     }
-    const token = jwt.sign(
-      {
-        userId: existingUser._id,
-        email: existingUser.email,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "15m" }
-    );
-    res.cookie("token", token, {
-      maxAge: 15 * 60 * 1000,
+
+    // generating tokens
+    const { accessToken, refreshToken } = generateTokens(existingUser);
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-    return res.status(200).json({ msg: "login successful" });
+    return res.status(200).json({ accessToken: accessToken });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: "server error" });
@@ -138,4 +156,31 @@ export const deleteUser = async (req, res) => {
     console.log(error);
     return res.status(500).json({ msg: "server error" });
   }
+};
+export const refreshAccessToken = (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) {
+    return res.status(403).json({ message: "No refresh token provided" });
+  }
+  try {
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+    // Generate new access token
+    const newAccessToken = jwt.sign(
+      { id: decoded.id, email: decoded.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "15m" }
+    );
+
+    // Send new access token in response
+    res.json({ accessToken: newAccessToken });
+  } catch (error) {
+    res.status(403).json({ message: "Invalid or expired refresh token" });
+  }
+};
+
+// Logout controller (clear refresh token cookie)
+export const logoutUser = (req, res) => {
+  res.clearCookie("refreshToken");
+  res.json({ message: "Logged out successfully" });
 };

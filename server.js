@@ -9,6 +9,7 @@ import orderRouter from "./routes/orderRoutes.js";
 import { corsOptions } from "./config/corsConfig.js";
 const app = express();
 import dotenv from "dotenv";
+import authMiddleware from "./middleware/authMiddleware.js";
 dotenv.config();
 const url = process.env.MONGODB_URI;
 // connnet to the database
@@ -34,6 +35,9 @@ app.get("/", (req, res) => {
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
 app.use("/api/order", orderRouter);
+app.get("/api/isLoggedIn", authMiddleware, (req, res) => {
+  return res.json({ loggedIn: true, user: req.user });
+});
 
 // server listening
 const port = process.env.PORT || 8848;
