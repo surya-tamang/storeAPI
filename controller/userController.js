@@ -2,6 +2,8 @@ import User from "../model/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+// generate access and refresh tokens of users
+
 const generateTokens = (user) => {
   const accessToken = jwt.sign(
     {
@@ -21,6 +23,8 @@ const generateTokens = (user) => {
   );
   return { accessToken, refreshToken };
 };
+
+// controll user logins
 
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -48,6 +52,9 @@ export const loginUser = async (req, res) => {
     return res.status(500).json({ msg: "server error" });
   }
 };
+
+// controll user register
+
 export const signupUser = async (req, res) => {
   const { first_name, last_name, phone, address, email, password } = req.body;
   try {
@@ -85,6 +92,9 @@ export const signupUser = async (req, res) => {
     return res.status(500).json({ msg: "server error" });
   }
 };
+
+// controll updating user
+
 export const updateUser = async (req, res) => {
   const { id } = req.params;
   const {
@@ -123,6 +133,9 @@ export const updateUser = async (req, res) => {
     return res.status(500).json({ msg: "server error" });
   }
 };
+
+// get particular user by ID
+
 export const getUser = async (req, res) => {
   const { id } = req.params;
   try {
@@ -133,6 +146,9 @@ export const getUser = async (req, res) => {
     return res.status(500).json({ msg: "server error" });
   }
 };
+
+// get all users
+
 export const getUsers = async (req, res) => {
   try {
     const users = await User.find({});
@@ -142,6 +158,9 @@ export const getUsers = async (req, res) => {
     return res.status(500).json({ msg: "server error" });
   }
 };
+
+// detete user
+
 export const deleteUser = async (req, res) => {
   const { id } = req.params;
   try {
@@ -157,6 +176,9 @@ export const deleteUser = async (req, res) => {
     return res.status(500).json({ msg: "server error" });
   }
 };
+
+// handle refreshing tokens
+
 export const refreshAccessToken = (req, res) => {
   const refreshToken = req.cookies.refreshToken;
   if (!refreshToken) {

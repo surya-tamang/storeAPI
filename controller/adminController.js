@@ -72,3 +72,34 @@ export const loginAdmin = async (req, res) => {
     return res.status(500).json({ msg: "server error" });
   }
 };
+export const updateAdmin = async (req, res) => {
+  const { id } = req.params;
+  const { email, password, name, profile } = req.body;
+  try {
+    const data = {};
+    if (email) data.email = email;
+    if (password) data.password = password;
+    if (name) data.name = name;
+    if (profile) data.profile = profile;
+
+    const admin = await Admin.findByIdAndUpdate(
+      id,
+      { $set: data },
+      { new: true }
+    );
+    if (!admin) {
+      return res.status(401).json({ msg: "No user found" });
+    }
+    return res.status(200).json({ msg: "Updated successfully" });
+  } catch (error) {}
+};
+export const deleteAdmin = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const admin = await Admin.findByIdAndDelete(id);
+    if (!admin) {
+      return res.status(401).json({ msg: "No user found" });
+    }
+    return res.status(200).json({ msg: "Deleted successfully" });
+  } catch (error) {}
+};
