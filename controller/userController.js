@@ -56,16 +56,9 @@ export const loginUser = async (req, res) => {
 // controll user register
 
 export const signupUser = async (req, res) => {
-  const { first_name, last_name, phone, address, email, password } = req.body;
+  const { first_name, last_name, email, password } = req.body;
   try {
-    if (
-      !first_name ||
-      !last_name ||
-      !phone ||
-      !address ||
-      !email ||
-      !password
-    ) {
+    if (!first_name || !last_name || !email || !password) {
       return res.status(400).json({ msg: "all fields required" });
     }
     const existingUser = await User.findOne({ email });
@@ -80,8 +73,6 @@ export const signupUser = async (req, res) => {
     const newUser = new User({
       first_name,
       last_name,
-      phone: Number(phone),
-      address,
       email,
       password: hashedPwd,
     });
