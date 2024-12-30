@@ -25,9 +25,9 @@ Endpoints for managing users:
 
 - **GET /api/user**
   - Retrieves a list of all available users.
-- **GET /api/user/:id**
+- **GET /api/user/profile**
   - Retrieves details of a specific user by ID.
-- **PUT /api/user/:id**
+- **PUT /api/user/profile**
   - Updates details of a specific user by ID.
 - **DELETE /api/user/:id**
   - Deletes a specific user by ID.
@@ -35,6 +35,8 @@ Endpoints for managing users:
   - Authenticates a user and returns a token.
 - **POST /api/user/signup**
   - Registers a new user.
+- **POST /api/user/refreshToken**
+  - Refresh accesstoken.
 
 ### Products
 
