@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 const addressSchema = new mongoose.Schema(
   {
     city: {
@@ -11,10 +12,12 @@ const addressSchema = new mongoose.Schema(
     },
     near: {
       type: String,
+      default: null,
     },
   },
   { _id: false }
 );
+
 const userSchema = new mongoose.Schema(
   {
     first_name: {
@@ -28,6 +31,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
@@ -35,20 +39,42 @@ const userSchema = new mongoose.Schema(
     },
     phone: {
       type: Number,
-      // required: true,
+      default: null,
     },
     address: {
       type: addressSchema,
-      // required: true,
+      default: null,
     },
-    profile_picture: {
+    avatar: {
       type: String,
+      default: null,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    resetPasswordToken: {
+      type: String,
+      default: null,
+    },
+    resetPasswordExpiresAt: {
+      type: Date,
+      default: null,
+    },
+    verificationToken: {
+      type: String,
+      default: null,
+    },
+    verificationTokenExpiresAt: {
+      type: Date,
+      default: null,
     },
   },
   {
-    strict: false,
+    timestamps: true,
+    strict: true,
   }
 );
 
-const User = mongoose.model("user", userSchema);
+const User = mongoose.model("User", userSchema);
 export default User;
