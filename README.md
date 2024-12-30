@@ -10,8 +10,6 @@ StoreAPI is a RESTful API designed for managing users, products, and orders in a
   - [Products](#products)
   - [Orders](#orders)
 - [Usage](#usage)
-- [Authentication](#authentication)
-- [Error Handling](#error-handling)
 
 ## Overview
 
