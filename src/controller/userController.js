@@ -37,7 +37,9 @@ export const loginUser = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ msg: "Incorrect email or password" });
     }
-
+    const loggedInUser = await User.findById(existingUser._id).select(
+      "-password"
+    );
     // generating tokens
     const { accessToken, refreshToken } = generateTokens(existingUser);
     res.cookie("refreshToken", refreshToken, {
@@ -46,7 +48,9 @@ export const loginUser = async (req, res) => {
       sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-    return res.status(200).json({ accessToken: accessToken });
+    return res
+      .status(200)
+      .json({ user: loggedInUser, accessToken: accessToken });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: "server error" });
@@ -87,16 +91,8 @@ export const signupUser = async (req, res) => {
 // controll updating user
 
 export const updateUser = async (req, res) => {
-  const { id } = req.params;
-  const {
-    first_name,
-    last_name,
-    phone,
-    email,
-    address,
-    profile_pic,
-    password,
-  } = req.body;
+  const { first_name, last_name, phone, email, address, password } = req.body;
+
   try {
     const user = {};
     if (first_name) user.first_name = first_name;
@@ -104,33 +100,35 @@ export const updateUser = async (req, res) => {
     if (email) user.email = email;
     if (phone) user.phone = phone;
     if (address) user.address = address;
-    if (profile_pic) user.profile_pic = profile_pic;
     if (password) {
       const hashedPwd = await bcrypt.hash(password, 10);
       user.password = hashedPwd;
     }
 
     const updateUser = await User.findByIdAndUpdate(
-      id,
+      req.user._id,
       { $set: user },
       { new: true }
-    );
+    ).select("-password");
+
     if (!updateUser) {
-      return res.status(400).json({ msg: "user not found" });
+      return res.status(404).json({ msg: "User not found" });
     }
-    return res.status(200).json({ msg: "user updated" });
+
+    return res
+      .status(200)
+      .json({ msg: "User updated successfully", user: updateUser });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ msg: "server error" });
+    console.error("Error updating user:", error);
+    return res.status(500).json({ msg: "Internal server error" });
   }
 };
 
 // get particular user by ID
 
-export const getUser = async (req, res) => {
-  const { id } = req.params;
+export const getUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(req.user._id).select("-password");
     return res.status(201).json(user);
   } catch (error) {
     console.log(error);
@@ -177,10 +175,10 @@ export const refreshAccessToken = (req, res) => {
   }
   try {
     const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-
+    // console.log(decoded);
     // Generate new access token
     const newAccessToken = jwt.sign(
-      { id: decoded.id, email: decoded.email },
+      { userId: decoded.userId, email: decoded.email },
       process.env.JWT_SECRET,
       { expiresIn: "15m" }
     );
