@@ -13,5 +13,6 @@ export const corsOptions = {
       callback(new Error("Not allowed by CORS")); // Reject the origin
     }
   },
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true, // Allow cookies or authorization headers
 };

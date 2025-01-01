@@ -124,6 +124,35 @@ export const updateUser = async (req, res) => {
   }
 };
 
+// updating profile picture
+
+export const updateUserProfile = async (req, res) => {
+  try {
+    const filePath = req.file?.path;
+
+    if (!filePath) {
+      return res.status(400).json({ error: "No file uploaded." });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      { $set: { avatar: filePath } },
+      { new: true }
+    ).select("-password");
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Profile updated successfully.", user: updatedUser });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error." });
+  }
+};
+
 // get particular user by ID
 
 export const getUserProfile = async (req, res) => {
@@ -170,6 +199,7 @@ export const deleteUser = async (req, res) => {
 
 export const refreshAccessToken = (req, res) => {
   const refreshToken = req.cookies.refreshToken;
+  console.log(req.cookies);
   if (!refreshToken) {
     return res.status(403).json({ message: "No refresh token provided" });
   }
